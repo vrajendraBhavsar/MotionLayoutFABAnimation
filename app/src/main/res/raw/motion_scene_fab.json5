@@ -1,0 +1,42 @@
+{
+  ConstraintSets: {
+    start: {
+      // on below line we are specifying width,height and margin
+      // from start, top and end for btn_coffee
+      btn_coffee: {
+        width: "spread",
+        height: 120,
+        start: ['parent', 'start', 16],
+        end: ['parent', 'end', 16],
+        top: ['parent', 'top', 0]
+      },
+      // on below line we are specifying width,height
+      // and margin from start, top and end for btn_lemon_tea
+      btn_lemon_tea: {
+        width: "spread",
+        height: 120,
+        start: ['parent', 'start', 16],
+        end: ['parent', 'end', 16],
+        top: ['btn_coffee', 'bottom', 16]
+      }
+    },
+    end: {
+      // on below line we are specifying width,height and margin
+      // from start, top and end for btn_coffee
+      btn_coffee: {
+        width: 150,
+        height: 120,
+        start: ['parent', 'start', 30],
+        end: ['btn_lemon_tea', 'start', 10]
+      },
+      // on below line we are specifying width,height
+      // and margin from start, top and end for btn_lemon_tea
+      btn_lemon_tea: {
+        width: 150,
+        height: 120,
+        start: ['btn_coffee', 'end', 10],
+        end: ['parent', 'end', 30]
+      }
+    }
+  }
+}
