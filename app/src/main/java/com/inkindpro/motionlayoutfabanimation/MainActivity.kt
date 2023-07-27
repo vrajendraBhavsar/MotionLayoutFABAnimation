@@ -9,18 +9,12 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,15 +27,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ExperimentalMotionApi
 import androidx.constraintlayout.compose.MotionLayout
+import androidx.constraintlayout.compose.MotionLayoutDebugFlags
 import androidx.constraintlayout.compose.MotionScene
 import com.inkindpro.motionlayoutfabanimation.ui.theme.GolderYellow
 import com.inkindpro.motionlayoutfabanimation.ui.theme.MotionLayoutFABAnimationTheme
-import com.inkindpro.motionlayoutfabanimation.ui.theme.OffWhite
+import java.util.EnumSet
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +45,6 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
-//                    Greeting("Android")
                     Box(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center,
@@ -86,9 +78,9 @@ fun FABAnimation() {
     MotionLayout(
         motionScene = MotionScene(motionScene),
         progress = animationProgress,
+        debug = EnumSet.of(MotionLayoutDebugFlags.SHOW_ALL),    // To enable debug mode
         modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
+            .fillMaxSize()
     ) {
         //Button - 1
         Button(
@@ -108,42 +100,9 @@ fun FABAnimation() {
                 Image(
                     painter = painterResource(id = R.drawable.ic_coffee),
                     contentDescription = "Coffee cup",
-                    modifier = Modifier.size(50.dp)
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    text = "Americano",
-                    color = OffWhite,
-                    fontSize = TextUnit(value = 18F, type = TextUnitType.Sp)
-                )
-            }
-        }
-
-        //Button - 2
-        Button(
-            onClick = {
-                animateButton = !animateButton
-            },
-            colors = ButtonDefaults.buttonColors(containerColor = GolderYellow),
-            modifier = Modifier.layoutId("btn_lemon_tea"),
-        ) {
-            Row(
-                modifier = Modifier
-                    .padding(4.dp)
-                    .fillMaxSize(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_lemon_tea),
-                    contentDescription = "Lemon tea",
-                    modifier = Modifier.size(50.dp)
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    text = "Iced Lemon Tea",
-                    color = OffWhite,
-                    fontSize = TextUnit(value = 18F, type = TextUnitType.Sp)
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .fillMaxSize()
                 )
             }
         }

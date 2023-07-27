@@ -4,39 +4,30 @@
       // on below line we are specifying width,height and margin
       // from start, top and end for btn_coffee
       btn_coffee: {
-        width: "spread",
-        height: 120,
-        start: ['parent', 'start', 16],
+        width: 56,
+        height: 56,
         end: ['parent', 'end', 16],
-        top: ['parent', 'top', 0]
-      },
-      // on below line we are specifying width,height
-      // and margin from start, top and end for btn_lemon_tea
-      btn_lemon_tea: {
-        width: "spread",
-        height: 120,
-        start: ['parent', 'start', 16],
-        end: ['parent', 'end', 16],
-        top: ['btn_coffee', 'bottom', 16]
+        bottom: ['parent', 'bottom', 16]
       }
     },
     end: {
       // on below line we are specifying width,height and margin
       // from start, top and end for btn_coffee
       btn_coffee: {
-        width: 150,
-        height: 120,
-        start: ['parent', 'start', 30],
-        end: ['btn_lemon_tea', 'start', 10]
-      },
-      // on below line we are specifying width,height
-      // and margin from start, top and end for btn_lemon_tea
-      btn_lemon_tea: {
-        width: 150,
-        height: 120,
-        start: ['btn_coffee', 'end', 10],
-        end: ['parent', 'end', 30]
+        width: 56,
+        height: 56,
+        start: ['parent', 'start'],
+        end: ['parent', 'end'],
+        top: ['parent', 'top'],
+        bottom: ['parent', 'bottom']
       }
+    }
+  },
+  Transitions: {  //to set transition properties between Start and End point.
+    default: {  //we'll have only one transition between Start and End. So we named it as Default. Your choice after all :D
+      from: 'start',
+      to: 'end',
+      pathMotionArc: 'startHorizontal', // Compose view will move down with slight circular arc
     }
   }
 }
