@@ -12,3 +12,6 @@ val Pink40 = Color(0xFF7D5260)
 
 val OffWhite = Color(0xFFFAF9F6)
 val GolderYellow = Color(0xFFffd700)
+val MattePurple = Color(0xFF392A48)
+val Beige = Color(0xFFf5f5dc)
+val Magnolia = Color(0xFFEBEAED)
