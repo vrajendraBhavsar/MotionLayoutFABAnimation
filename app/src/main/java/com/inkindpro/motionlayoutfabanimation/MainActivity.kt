@@ -1,5 +1,7 @@
 package com.inkindpro.motionlayoutfabanimation
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -8,10 +10,12 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -32,6 +36,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.ImageBitmapConfig
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -48,6 +59,7 @@ import circularReveal
 import com.inkindpro.motionlayoutfabanimation.ui.theme.Magnolia
 import com.inkindpro.motionlayoutfabanimation.ui.theme.MattePurple
 import com.inkindpro.motionlayoutfabanimation.ui.theme.MotionLayoutFABAnimationTheme
+import com.inkindpro.motionlayoutfabanimation.ui.theme.PurpleGrey40
 import kotlinx.coroutines.delay
 import java.util.EnumSet
 
@@ -58,7 +70,7 @@ class MainActivity : ComponentActivity() {
             MotionLayoutFABAnimationTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxSize(), color = Magnolia
                 ) {
                     Box(
                         modifier = Modifier.fillMaxSize(),
@@ -76,8 +88,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun FABAnimation() {
     val context = LocalContext.current
-
-    //Animate button method
     var animateButton by remember { mutableStateOf(false) } //To manage the state of a FAB button
     var circularRevealAnimation by remember { mutableStateOf(false) }   //To handle circular reveal animation
 
@@ -100,19 +110,17 @@ fun FABAnimation() {
 
     Box(
         modifier = Modifier
-            .fillMaxSize()/*.clickable {
-            circularRevealAnimation = !circularRevealAnimation
-        }*/
+            .fillMaxSize()
             .circularReveal(
-//                visible = circularButton,
                 transitionProgress = progressState, revealFrom = Offset(0.5f, 0.5f)
-            ), contentAlignment = Alignment.BottomCenter
+            ),
+        contentAlignment = Alignment.BottomCenter
     ) {
         Box(
             modifier = Modifier
                 .padding(10.dp)
                 .fillMaxWidth()
-                .height(350.dp)
+                .fillMaxHeight(0.5f)
                 .clip(shape = RoundedCornerShape(12.dp))
                 .background(MattePurple)
         ) {
@@ -128,15 +136,15 @@ fun FABAnimation() {
                     Text(
                         text = stringResource(id = R.string.circular_reveal_title),
                         fontSize = 32.sp,
-                        fontWeight = FontWeight.SemiBold
+                        fontWeight = FontWeight.SemiBold,
+                        color = Magnolia
                     )
-//                    Spacer(modifier = Modifier.height(8.dp))
-//                    Text(text = stringResource(id = R.string.circular_reveal_sub_title), fontSize = 24.sp, fontWeight = FontWeight.Normal)
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = stringResource(id = R.string.circular_reveal_body_copy_text),
                         fontSize = 14.sp,
-                        fontWeight = FontWeight.Normal
+                        fontWeight = FontWeight.Normal,
+                        color = Magnolia
                     )
                 }
 
@@ -154,7 +162,7 @@ fun FABAnimation() {
                         text = stringResource(id = R.string.circular_reveal_btn_close),
                         fontSize = 16.sp,
                         color = MattePurple,
-                        fontWeight = FontWeight.SemiBold
+                        fontWeight = FontWeight.SemiBold,
                     )
                 }
             }
@@ -166,7 +174,6 @@ fun FABAnimation() {
      ***/
     if (!circularRevealAnimation) {
         LaunchedEffect(key1 = Unit) {
-            Log.d("TAG", "!@# FABAnimation: LaunchedEffect:: IFF $circularRevealAnimation")
             delay(1000)
             animateButton = false
         }
@@ -176,15 +183,12 @@ fun FABAnimation() {
      * To manage circular reveal animation based on the state of the FAB button
      **/
     if (animateButton) {
-        Log.d("TAG", "!@# FABAnimation: $circularRevealAnimation")
         LaunchedEffect(key1 = Unit) {
-            Log.d("TAG", "!@# FABAnimation: LaunchedEffect:: IFF $circularRevealAnimation")
             delay(1000)
             circularRevealAnimation = true
         }
     } else {
         LaunchedEffect(key1 = Unit) {
-            Log.d("TAG", "!@# FABAnimation: LaunchedEffect:: ELSE $circularRevealAnimation")
             delay(1000)
             circularRevealAnimation = false
         }
@@ -194,50 +198,78 @@ fun FABAnimation() {
         motionScene = MotionScene(motionScene),
         progress = animationProgress,
         debug = EnumSet.of(MotionLayoutDebugFlags.SHOW_ALL),    // To enable debug mode
-        modifier = Modifier.fillMaxSize()/*            .clickable {
-                circularButton = !circularButton
-            }
-            .circularReveal(
-//                visible = circularButton,
-                transitionProgress = progressState,
-                revealFrom = Offset(0.5f, 0.5f)
-            )*/
+        modifier = Modifier.fillMaxSize()
     ) {
         //Animating FAB button
-        Button(
-            onClick = {
-                animateButton = true
-            },
-            colors = ButtonDefaults.buttonColors(containerColor = Magnolia),
-            modifier = Modifier.layoutId("btn_coffee"),
-        ) {
+        Image(
+            modifier = Modifier
+                .layoutId("img_hanuman_standing")
+                .clickable { animateButton = true },
+            painter = painterResource(id = R.drawable.ic_hanuman_standing_pose),
+            contentDescription = "Hanuman standing"
+        )
+        //Animating FAB button
+        Image(
+            modifier = Modifier
+                .layoutId("img_hanuman_pose")
+                .clickable { animateButton = true },
+            painter = painterResource(id = R.drawable.ic_hanuman_thumps_up),
+            contentDescription = "Hanuman thumbs up"
+        )
 
-            Image(
-                painter = painterResource(id = R.drawable.ic_coffee),
-                contentDescription = "Coffee cup",
-                modifier = Modifier
-//                        .padding(2.dp)
-//                    .fillMaxSize()
-            )
+/*        val option = BitmapFactory.Options()
+        option.inPreferredConfig = Bitmap.Config.ARGB_8888
+        val srcImageBitmap: ImageBitmap = BitmapFactory.decodeResource( // Your source image bitmap
+            LocalContext.current.resources,
+            R.drawable.ic_hanuman_standing_pose,
+            option
+        ).asImageBitmap()
+        val altSrcImageBitmap: ImageBitmap = BitmapFactory.decodeResource( // Your alternative source image bitmap
+            LocalContext.current.resources,
+            R.drawable.ic_hanuman_thumps_up,
+            option
+        ).asImageBitmap()
 
-            /*Row(
-                modifier = Modifier
-                    .padding(4.dp)
-                    .fillMaxSize(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_coffee),
-                    contentDescription = "Coffee cup",
-                    modifier = Modifier
-//                        .padding(2.dp)
-                        .fillMaxSize()
-                )
-            }*/
-        }
+//        val srcImageBitmap: ImageBitmap = painterResource(id = R.drawable.ic_hanuman_standing_pose) // Your source image bitmap
+//        val altSrcImageBitmap: ImageBitmap = painterResource(id = R.drawable.ic_hanuman_standing_pose) // Your alternative source image bitmap
+        val colorFilter = ColorFilter.tint(PurpleGrey40) // Replace 'yourDesiredColor' with the color you want for the filter
+
+        FilteredImageView(srcImageBitmap, altSrcImageBitmap, colorFilter, useAltSrc = true)*/
+
     }
 }
+
+/*@Composable
+fun FilteredImageView(src: ImageBitmap, altSrc: ImageBitmap, filter: ColorFilter, useAltSrc: Boolean) {
+    Image(
+        painter = BitmapPainter(if (useAltSrc) altSrc else src),
+        contentDescription = null,
+        modifier = Modifier
+            .fillMaxSize()
+            *//*.graphicsLayer(
+                // Use the 'filter' argument to apply the ColorFilter
+                colorFilter = filter
+            )*//*
+        ,
+        colorFilter = filter
+    )
+}*/
+
+/*@Composable
+fun FilteredImageView(src: ImageBitmap, altSrc: ImageBitmap, filter: ColorFilter) {
+    Image(
+        painter = BitmapPainter(src),
+        contentDescription = null,
+        modifier = Modifier
+            .fillMaxSize()
+            *//*.graphicsLayer(
+                // Use the 'filter' argument to apply the ColorFilter
+                colorFilter = filter
+            )*//*
+        ,
+        colorFilter = filter
+    )
+}*/
 
 @Preview(showBackground = true)
 @Composable
