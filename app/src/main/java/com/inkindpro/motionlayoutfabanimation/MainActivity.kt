@@ -1,9 +1,9 @@
 package com.inkindpro.motionlayoutfabanimation
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.core.animateFloatAsState
@@ -21,9 +21,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,18 +36,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.ImageBitmapConfig
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -55,11 +54,13 @@ import androidx.constraintlayout.compose.ExperimentalMotionApi
 import androidx.constraintlayout.compose.MotionLayout
 import androidx.constraintlayout.compose.MotionLayoutDebugFlags
 import androidx.constraintlayout.compose.MotionScene
+import androidx.core.content.ContextCompat.startActivity
 import circularReveal
+import com.inkindpro.motionlayoutfabanimation.ui.theme.GolderYellow
 import com.inkindpro.motionlayoutfabanimation.ui.theme.Magnolia
 import com.inkindpro.motionlayoutfabanimation.ui.theme.MattePurple
 import com.inkindpro.motionlayoutfabanimation.ui.theme.MotionLayoutFABAnimationTheme
-import com.inkindpro.motionlayoutfabanimation.ui.theme.PurpleGrey40
+import com.inkindpro.motionlayoutfabanimation.ui.theme.OffWhite
 import kotlinx.coroutines.delay
 import java.util.EnumSet
 
@@ -87,7 +88,7 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMotionApi::class)
 @Composable
 fun FABAnimation() {
-    val context = LocalContext.current
+    val context = LocalContext.current as MainActivity
     var animateButton by remember { mutableStateOf(false) } //To manage the state of a FAB button
     var circularRevealAnimation by remember { mutableStateOf(false) }   //To handle circular reveal animation
 
@@ -108,13 +109,24 @@ fun FABAnimation() {
             .decodeToString()   //To decode byte array to String
     }
 
+    //Overlay in the bg of circular reveal
+    if (circularRevealAnimation) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MattePurple.copy(alpha = 0.8f))
+                .circularReveal(
+                    transitionProgress = progressState, revealFrom = Offset(0.5f, 0.5f)
+                )
+        )
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .circularReveal(
                 transitionProgress = progressState, revealFrom = Offset(0.5f, 0.5f)
-            ),
-        contentAlignment = Alignment.BottomCenter
+            ), contentAlignment = Alignment.BottomCenter
     ) {
         Box(
             modifier = Modifier
@@ -140,6 +152,39 @@ fun FABAnimation() {
                         color = Magnolia
                     )
                     Spacer(modifier = Modifier.height(8.dp))
+
+                    val uriHandler = LocalUriHandler.current
+                    val uri = stringResource(id = R.string.circular_reveal_body_copy_link)
+                    val gameLink = buildAnnotatedString {
+                        append(text = stringResource(id = R.string.circular_reveal_body_copy_link_text_1))
+                        append(text = " ")
+                        pushStringAnnotation(
+                            tag = stringResource(id = R.string.circular_reveal_body_copy_link_text_2),
+                            annotation = stringResource(id = R.string.circular_reveal_body_copy_link)
+                        )
+                        withStyle(
+                            style = SpanStyle(
+                                color = GolderYellow,
+                            )
+                        ) {
+                            append(stringResource(id = R.string.circular_reveal_body_copy_link_text_2))
+                        }
+                        append(text = " ")
+                        append(text = stringResource(id = R.string.circular_reveal_body_copy_link_text_3))
+                        pop()
+                    }
+
+                    ClickableText(text = gameLink, style = TextStyle(
+                        color = OffWhite, fontSize = 14.sp, fontWeight = FontWeight.Light,
+//                            fontFamily = FontFamily(Font(R.font.yourFontFamily)),
+                        textAlign = TextAlign.Start
+                    ), modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 15.dp), onClick = {
+                        //Opening a link into the supportive browser using URI Handler
+                        uriHandler.openUri(uri)
+                    })
+
                     Text(
                         text = stringResource(id = R.string.circular_reveal_body_copy_text),
                         fontSize = 14.sp,
@@ -200,7 +245,7 @@ fun FABAnimation() {
         debug = EnumSet.of(MotionLayoutDebugFlags.SHOW_ALL),    // To enable debug mode
         modifier = Modifier.fillMaxSize()
     ) {
-        //Animating FAB button
+        //Animating Bal hanuman standing pose image
         Image(
             modifier = Modifier
                 .layoutId("img_hanuman_standing")
@@ -208,68 +253,16 @@ fun FABAnimation() {
             painter = painterResource(id = R.drawable.ic_hanuman_standing_pose),
             contentDescription = "Hanuman standing"
         )
-        //Animating FAB button
+        //Animating Bal hanuman victory pose image
         Image(
             modifier = Modifier
                 .layoutId("img_hanuman_pose")
                 .clickable { animateButton = true },
             painter = painterResource(id = R.drawable.ic_hanuman_thumps_up),
-            contentDescription = "Hanuman thumbs up"
+            contentDescription = "Hanuman victory pose"
         )
-
-/*        val option = BitmapFactory.Options()
-        option.inPreferredConfig = Bitmap.Config.ARGB_8888
-        val srcImageBitmap: ImageBitmap = BitmapFactory.decodeResource( // Your source image bitmap
-            LocalContext.current.resources,
-            R.drawable.ic_hanuman_standing_pose,
-            option
-        ).asImageBitmap()
-        val altSrcImageBitmap: ImageBitmap = BitmapFactory.decodeResource( // Your alternative source image bitmap
-            LocalContext.current.resources,
-            R.drawable.ic_hanuman_thumps_up,
-            option
-        ).asImageBitmap()
-
-//        val srcImageBitmap: ImageBitmap = painterResource(id = R.drawable.ic_hanuman_standing_pose) // Your source image bitmap
-//        val altSrcImageBitmap: ImageBitmap = painterResource(id = R.drawable.ic_hanuman_standing_pose) // Your alternative source image bitmap
-        val colorFilter = ColorFilter.tint(PurpleGrey40) // Replace 'yourDesiredColor' with the color you want for the filter
-
-        FilteredImageView(srcImageBitmap, altSrcImageBitmap, colorFilter, useAltSrc = true)*/
-
     }
 }
-
-/*@Composable
-fun FilteredImageView(src: ImageBitmap, altSrc: ImageBitmap, filter: ColorFilter, useAltSrc: Boolean) {
-    Image(
-        painter = BitmapPainter(if (useAltSrc) altSrc else src),
-        contentDescription = null,
-        modifier = Modifier
-            .fillMaxSize()
-            *//*.graphicsLayer(
-                // Use the 'filter' argument to apply the ColorFilter
-                colorFilter = filter
-            )*//*
-        ,
-        colorFilter = filter
-    )
-}*/
-
-/*@Composable
-fun FilteredImageView(src: ImageBitmap, altSrc: ImageBitmap, filter: ColorFilter) {
-    Image(
-        painter = BitmapPainter(src),
-        contentDescription = null,
-        modifier = Modifier
-            .fillMaxSize()
-            *//*.graphicsLayer(
-                // Use the 'filter' argument to apply the ColorFilter
-                colorFilter = filter
-            )*//*
-        ,
-        colorFilter = filter
-    )
-}*/
 
 @Preview(showBackground = true)
 @Composable
