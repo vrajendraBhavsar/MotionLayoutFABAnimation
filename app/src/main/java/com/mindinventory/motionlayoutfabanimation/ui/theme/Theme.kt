@@ -1,4 +1,4 @@
-package com.inkindpro.motionlayoutfabanimation.ui.theme
+package com.mindinventory.motionlayoutfabanimation.ui.theme
 
 import android.app.Activity
 import android.os.Build

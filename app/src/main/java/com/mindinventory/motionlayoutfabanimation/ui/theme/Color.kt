@@ -1,4 +1,4 @@
-package com.inkindpro.motionlayoutfabanimation.ui.theme
+package com.mindinventory.motionlayoutfabanimation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">MotionLayoutFABAnimation</string>
+    <string name="circular_reveal_title">Bal Hanuman - Adventure Game</string>
+    <string name="circular_reveal_body_copy_text">A game where users can ride on an adventure to showcase their skills on all different levels.</string>
+    <string name="circular_reveal_body_copy_link">https://play.google.com/store/apps/details?id=com.a300mind.balhanuman</string>
+    <string name="circular_reveal_body_copy_link_text_1">Experience </string>
+    <string name="circular_reveal_body_copy_link_text_2">Bal Hanuman</string>
+    <string name="circular_reveal_body_copy_link_text_3">- Now in our app</string>
+    <string name="circular_reveal_btn_playstore_link">Install</string>
+    <string name="circular_reveal_btn_close">Close</string>
+</resources>

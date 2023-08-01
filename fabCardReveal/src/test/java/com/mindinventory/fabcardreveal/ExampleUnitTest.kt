@@ -1,4 +1,4 @@
-package com.inkindpro.motionlayoutfabanimation
+package com.mindinventory.fabcardreveal
 
 import org.junit.Test
 
