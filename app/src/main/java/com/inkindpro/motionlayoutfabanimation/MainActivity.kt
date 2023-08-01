@@ -1,8 +1,5 @@
 package com.inkindpro.motionlayoutfabanimation
 
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,7 +11,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -36,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
@@ -46,6 +46,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -54,13 +55,13 @@ import androidx.constraintlayout.compose.ExperimentalMotionApi
 import androidx.constraintlayout.compose.MotionLayout
 import androidx.constraintlayout.compose.MotionLayoutDebugFlags
 import androidx.constraintlayout.compose.MotionScene
-import androidx.core.content.ContextCompat.startActivity
 import circularReveal
+import com.inkindpro.motionlayoutfabanimation.ui.theme.Beige
 import com.inkindpro.motionlayoutfabanimation.ui.theme.GolderYellow
 import com.inkindpro.motionlayoutfabanimation.ui.theme.Magnolia
 import com.inkindpro.motionlayoutfabanimation.ui.theme.MattePurple
 import com.inkindpro.motionlayoutfabanimation.ui.theme.MotionLayoutFABAnimationTheme
-import com.inkindpro.motionlayoutfabanimation.ui.theme.OffWhite
+import com.inkindpro.motionlayoutfabanimation.ui.theme.StrongRed
 import kotlinx.coroutines.delay
 import java.util.EnumSet
 
@@ -71,7 +72,7 @@ class MainActivity : ComponentActivity() {
             MotionLayoutFABAnimationTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(), color = Magnolia
+                    modifier = Modifier.fillMaxSize(), color = Beige
                 ) {
                     Box(
                         modifier = Modifier.fillMaxSize(),
@@ -134,11 +135,14 @@ fun FABAnimation() {
                 .fillMaxWidth()
                 .fillMaxHeight(0.5f)
                 .clip(shape = RoundedCornerShape(12.dp))
-                .background(MattePurple)
+                .background(brush = Brush.verticalGradient(listOf(MattePurple, StrongRed))) // Define your vertical gradient colors here
         ) {
             Column(
                 modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween
             ) {
+                val uriHandler = LocalUriHandler.current
+                val uri = stringResource(id = R.string.circular_reveal_body_copy_link)
+
                 Column(
                     modifier = Modifier
                         .weight(3f)
@@ -149,12 +153,11 @@ fun FABAnimation() {
                         text = stringResource(id = R.string.circular_reveal_title),
                         fontSize = 32.sp,
                         fontWeight = FontWeight.SemiBold,
-                        color = Magnolia
+                        color = Beige,
+                        lineHeight = 30.sp
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
 
-                    val uriHandler = LocalUriHandler.current
-                    val uri = stringResource(id = R.string.circular_reveal_body_copy_link)
                     val gameLink = buildAnnotatedString {
                         append(text = stringResource(id = R.string.circular_reveal_body_copy_link_text_1))
                         append(text = " ")
@@ -165,6 +168,7 @@ fun FABAnimation() {
                         withStyle(
                             style = SpanStyle(
                                 color = GolderYellow,
+                                textDecoration = TextDecoration.Underline
                             )
                         ) {
                             append(stringResource(id = R.string.circular_reveal_body_copy_link_text_2))
@@ -174,41 +178,68 @@ fun FABAnimation() {
                         pop()
                     }
 
-                    ClickableText(text = gameLink, style = TextStyle(
-                        color = OffWhite, fontSize = 14.sp, fontWeight = FontWeight.Light,
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    ClickableText(
+                        text = gameLink,
+                        style = TextStyle(
+                        color = Beige,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Light,
 //                            fontFamily = FontFamily(Font(R.font.yourFontFamily)),
-                        textAlign = TextAlign.Start
-                    ), modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 15.dp), onClick = {
-                        //Opening a link into the supportive browser using URI Handler
-                        uriHandler.openUri(uri)
-                    })
+                            textAlign = TextAlign.Start),
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = {
+                            uriHandler.openUri(uri) //Opening a link into the supportive browser using URI Handler
+                        })
 
                     Text(
                         text = stringResource(id = R.string.circular_reveal_body_copy_text),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Normal,
-                        color = Magnolia
+                        color = Beige
                     )
                 }
 
-                Button(
-                    onClick = {
-                        circularRevealAnimation = false
-                    },
-                    modifier = Modifier
-                        .padding(20.dp)
-                        .fillMaxWidth()
-                        .weight(1f),
-                    colors = ButtonDefaults.buttonColors(containerColor = Magnolia),
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.circular_reveal_btn_close),
-                        fontSize = 16.sp,
-                        color = MattePurple,
-                        fontWeight = FontWeight.SemiBold,
-                    )
+                Row {
+                    Button(
+                        onClick = {
+                            circularRevealAnimation = false
+                        },
+                        modifier = Modifier
+                            .padding(start = 20.dp, end = 10.dp, bottom = 20.dp)
+                            .fillMaxWidth()
+                            .aspectRatio(3f) // Adjust the aspect ratio to your preference
+                            .weight(1f),
+                        colors = ButtonDefaults.buttonColors(containerColor = Beige),
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.circular_reveal_btn_close),
+                            fontSize = 16.sp,
+                            color = MattePurple,
+                            fontWeight = FontWeight.SemiBold,
+                        )
+                    }
+
+                    Button(
+                        onClick = {
+                            uriHandler.openUri(uri)
+                        },
+                        modifier = Modifier
+                            .padding(start = 10.dp, end = 20.dp, bottom = 20.dp)
+                            .fillMaxWidth()
+                            .aspectRatio(3f) // Adjust the aspect ratio to your preference
+                            .weight(1f)
+                        ,
+                        colors = ButtonDefaults.buttonColors(containerColor = GolderYellow),
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.circular_reveal_btn_playstore_link),
+                            fontSize = 16.sp,
+                            color = MattePurple,
+                            fontWeight = FontWeight.SemiBold,
+                        )
+                    }
                 }
             }
         }

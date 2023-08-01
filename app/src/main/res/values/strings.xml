@@ -6,5 +6,6 @@
     <string name="circular_reveal_body_copy_link_text_1">Experience </string>
     <string name="circular_reveal_body_copy_link_text_2">Bal Hanuman</string>
     <string name="circular_reveal_body_copy_link_text_3">- Now in our app</string>
+    <string name="circular_reveal_btn_playstore_link">Install</string>
     <string name="circular_reveal_btn_close">Close</string>
 </resources>
