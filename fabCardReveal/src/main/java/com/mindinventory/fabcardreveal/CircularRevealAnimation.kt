@@ -5,6 +5,10 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -15,36 +19,31 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.ExperimentalUnitApi
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
+import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ExperimentalMotionApi
 import androidx.constraintlayout.compose.MotionLayout
 import androidx.constraintlayout.compose.MotionLayoutDebugFlags
 import androidx.constraintlayout.compose.MotionScene
 import com.mindinventory.fabcardreveal.utils.miCircularReveal
 import com.mindinventory.motionlayoutfabanimation.ui.theme.MattePurple
+import com.mindinventory.motionlayoutfabanimation.ui.theme.OffWhite
 import kotlinx.coroutines.delay
 import java.util.EnumSet
 
-@OptIn(ExperimentalMotionApi::class)
+@OptIn(ExperimentalMotionApi::class, ExperimentalUnitApi::class)
 @Composable
 fun CircularRevealAnimation(
-    modifier: Modifier = Modifier,
     cardComposable: @Composable (() -> Unit)? = null,
     fabComposable: @Composable (() -> Unit)? = null,
     circularRevealAnimationVal: MutableState<Boolean> = remember { mutableStateOf(false) },
     animateButtonVal: MutableState<Boolean> = remember { mutableStateOf(false) }
 ) {
-    /*val context = LocalContext.current
-    var animateButton by remember { mutableStateOf(false) } //To manage the state of a FAB button
-    LaunchedEffect(key1 = animateButtonVal) {
-        animateButton = animateButtonVal
-    }
-    var circularRevealAnimation by remember { mutableStateOf(false) }   //To handle circular reveal animation
-//    circularRevealAnimation = circularRevealAnimationVal      //????????????????????????????????????????????????????? ..Once project get set up, need to check if this way can we close the card
-    LaunchedEffect(key1 = circularRevealAnimationVal) {
-        animateButton = circularRevealAnimationVal
-    }*/
-
     val context = LocalContext.current
     var animateButton by animateButtonVal
     var circularRevealAnimation by circularRevealAnimationVal
@@ -85,7 +84,7 @@ fun CircularRevealAnimation(
         contentAlignment = Alignment.BottomCenter
     ) {
         //FIXME: Here we'll pass composable for Card content
-        cardComposable?.let { it() }
+        cardComposable?.let { if (animateButton) { it() } }
     }
 
     /**
@@ -119,6 +118,43 @@ fun CircularRevealAnimation(
         debug = EnumSet.of(MotionLayoutDebugFlags.SHOW_ALL),    // To enable debug mode
         modifier = Modifier.fillMaxSize()
     ) {
-        fabComposable?.let { it() }
+        if (fabComposable != null) {
+            fabComposable.let { it() }
+        } else {
+            //Button - 2
+            Button(
+                onClick = {
+                    if (!circularRevealAnimation) animateButton = !animateButton
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = MattePurple),
+                modifier = Modifier
+                    .layoutId("img_hanuman_standing")
+                    .padding(10.dp),
+            ) {
+                Text(
+                    text = "+",
+                    color = OffWhite,
+                    fontSize = TextUnit(value = 40F, type = TextUnitType.Sp),
+                    textAlign = TextAlign.Center
+                )
+            }
+
+            Button(
+                onClick = {
+                    if (!circularRevealAnimation) animateButton = !animateButton
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = MattePurple),
+                modifier = Modifier
+                    .layoutId("img_hanuman_pose")
+                    .padding(25.dp),
+            ) {
+                Text(
+                    text = "+",
+                    color = OffWhite,
+                    fontSize = TextUnit(value = 40F, type = TextUnitType.Sp),
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
     }
 }

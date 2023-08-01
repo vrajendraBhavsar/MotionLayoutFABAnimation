@@ -78,11 +78,11 @@ class MainActivity : ComponentActivity() {
                                     circularRevealAnimation.value = false
                                 }
                             },
-                            fabComposable =  {
+                            /*fabComposable =  {
                                 FabAnimationHandler() {
                                     animateButton.value = true
                                 }
-                            }
+                            }*/
                         )
                     }
                 }
