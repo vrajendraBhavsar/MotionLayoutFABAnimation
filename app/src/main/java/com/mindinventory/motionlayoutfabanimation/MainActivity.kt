@@ -24,10 +24,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -65,7 +63,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val circularRevealAnimation = remember { mutableStateOf(false) }   //To handle circular reveal animation
                     val animateButton = remember { mutableStateOf(false) } //To manage the state of a FAB button
-
+                    val hideFabPostAnimation = remember { mutableStateOf(value = true) }
                     Box(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center,
@@ -82,7 +80,8 @@ class MainActivity : ComponentActivity() {
                                 FabAnimationHandler() {
                                     animateButton.value = true
                                 }
-                            }*/
+                            },
+                            hideFabPostAnimationVal = hideFabPostAnimation*/
                         )
                     }
                 }
@@ -217,7 +216,7 @@ fun FabAnimationHandler(handleAnimateButton: () -> Unit) {
             .clickable {
 //                animateButton = true
                 handleAnimateButton()
-                       },
+            },
         painter = painterResource(id = com.mindinventory.motionlayoutfabanimation.R.drawable.ic_hanuman_standing_pose),
         contentDescription = "Hanuman standing"
     )
@@ -228,7 +227,7 @@ fun FabAnimationHandler(handleAnimateButton: () -> Unit) {
             .clickable {
 //                animateButton = true
                 handleAnimateButton()
-                       },
+            },
         painter = painterResource(id = com.mindinventory.motionlayoutfabanimation.R.drawable.ic_hanuman_thumps_up),
         contentDescription = "Hanuman victory pose"
     )

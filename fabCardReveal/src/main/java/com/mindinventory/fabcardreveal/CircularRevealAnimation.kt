@@ -42,11 +42,16 @@ fun CircularRevealAnimation(
     cardComposable: @Composable (() -> Unit)? = null,
     fabComposable: @Composable (() -> Unit)? = null,
     circularRevealAnimationVal: MutableState<Boolean> = remember { mutableStateOf(false) },
-    animateButtonVal: MutableState<Boolean> = remember { mutableStateOf(false) }
+    animateButtonVal: MutableState<Boolean> = remember { mutableStateOf(false) },
+    hideFabPostAnimationVal: MutableState<Boolean> = remember { mutableStateOf(false) },
 ) {
     val context = LocalContext.current
+
     var animateButton by animateButtonVal
     var circularRevealAnimation by circularRevealAnimationVal
+    val hideFabPostAnimation by hideFabPostAnimationVal
+
+    var isFABVisible by remember { mutableStateOf(true) }
 
     //Button animation progress
     val animationProgress by animateFloatAsState(
@@ -84,7 +89,11 @@ fun CircularRevealAnimation(
         contentAlignment = Alignment.BottomCenter
     ) {
         //FIXME: Here we'll pass composable for Card content
-        cardComposable?.let { if (animateButton) { it() } }
+        cardComposable?.let {
+            if (animateButton) {
+                it()
+            }
+        }
     }
 
     /**
@@ -95,6 +104,10 @@ fun CircularRevealAnimation(
             delay(1000)
             animateButton = false
         }
+        LaunchedEffect(key1 = Unit) {
+            delay(550)
+            if (hideFabPostAnimation) isFABVisible = true
+        }
     }
 
     /**
@@ -103,6 +116,7 @@ fun CircularRevealAnimation(
     if (animateButton) {
         LaunchedEffect(key1 = Unit) {
             delay(1000)
+            if (hideFabPostAnimation) isFABVisible = false
             circularRevealAnimation = true
         }
     } else {
@@ -112,48 +126,64 @@ fun CircularRevealAnimation(
         }
     }
 
-    MotionLayout(
-        motionScene = MotionScene(motionScene),
-        progress = animationProgress,
-        debug = EnumSet.of(MotionLayoutDebugFlags.SHOW_ALL),    // To enable debug mode
-        modifier = Modifier.fillMaxSize()
-    ) {
-        if (fabComposable != null) {
-            fabComposable.let { it() }
-        } else {
-            //Button - 2
-            Button(
-                onClick = {
-                    if (!circularRevealAnimation) animateButton = !animateButton
-                },
-                colors = ButtonDefaults.buttonColors(containerColor = MattePurple),
-                modifier = Modifier
-                    .layoutId("img_hanuman_standing")
-                    .padding(10.dp),
-            ) {
-                Text(
-                    text = "+",
-                    color = OffWhite,
-                    fontSize = TextUnit(value = 40F, type = TextUnitType.Sp),
-                    textAlign = TextAlign.Center
-                )
-            }
+    /**
+     *  To handle FAB button vidibility based on the selection from the caller side.
+     *
+     *  Here we'll hide button after certain time interval once initial animation is done and before
+     *  circular reveal animation is triggered
+     **//*if (hideFabPostAnimation) {
+        LaunchedEffect(key1 = Unit) {
+            delay(1000)
+            isFABVisible = false
+        }
+    } else {
+        isFABVisible = true
+    }*/
 
-            Button(
-                onClick = {
-                    if (!circularRevealAnimation) animateButton = !animateButton
-                },
-                colors = ButtonDefaults.buttonColors(containerColor = MattePurple),
-                modifier = Modifier
-                    .layoutId("img_hanuman_pose")
-                    .padding(25.dp),
-            ) {
-                Text(
-                    text = "+",
-                    color = OffWhite,
-                    fontSize = TextUnit(value = 40F, type = TextUnitType.Sp),
-                    textAlign = TextAlign.Center
-                )
+    if (isFABVisible) {
+        MotionLayout(
+            motionScene = MotionScene(motionScene),
+            progress = animationProgress,
+            debug = EnumSet.of(MotionLayoutDebugFlags.SHOW_ALL),    // To enable debug mode
+            modifier = Modifier.fillMaxSize()
+        ) {
+            if (fabComposable != null) {
+                fabComposable.let { it() }
+            } else {
+                //Button - 2
+                Button(
+                    onClick = {
+                        if (!circularRevealAnimation) animateButton = !animateButton
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = MattePurple),
+                    modifier = Modifier
+                        .layoutId("img_hanuman_standing")
+                        .padding(10.dp),
+                ) {
+                    Text(
+                        text = "+",
+                        color = OffWhite,
+                        fontSize = TextUnit(value = 40F, type = TextUnitType.Sp),
+                        textAlign = TextAlign.Center
+                    )
+                }
+
+                Button(
+                    onClick = {
+                        if (!circularRevealAnimation) animateButton = !animateButton
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = MattePurple),
+                    modifier = Modifier
+                        .layoutId("img_hanuman_pose")
+                        .padding(25.dp),
+                ) {
+                    Text(
+                        text = "+",
+                        color = OffWhite,
+                        fontSize = TextUnit(value = 40F, type = TextUnitType.Sp),
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
         }
     }
