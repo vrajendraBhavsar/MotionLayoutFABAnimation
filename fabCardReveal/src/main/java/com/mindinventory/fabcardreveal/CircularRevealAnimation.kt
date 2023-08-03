@@ -18,7 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
@@ -30,7 +29,7 @@ import androidx.constraintlayout.compose.ExperimentalMotionApi
 import androidx.constraintlayout.compose.MotionLayout
 import androidx.constraintlayout.compose.MotionLayoutDebugFlags
 import androidx.constraintlayout.compose.MotionScene
-import com.mindinventory.fabcardreveal.utils.miCircularReveal
+import com.mindinventory.fabcardreveal.utils.slideInFromBottomAnimation
 import com.mindinventory.motionlayoutfabanimation.ui.theme.MattePurple
 import com.mindinventory.motionlayoutfabanimation.ui.theme.OffWhite
 import kotlinx.coroutines.delay
@@ -44,6 +43,9 @@ fun CircularRevealAnimation(
     circularRevealAnimationVal: MutableState<Boolean> = remember { mutableStateOf(false) },
     animateButtonVal: MutableState<Boolean> = remember { mutableStateOf(false) },
     hideFabPostAnimationVal: MutableState<Boolean> = remember { mutableStateOf(false) },
+    fabAnimationDur: Int = 1000,
+    revealAnimDur: Int = 1000,
+    fabCloseDelay: Long = 1000L //Need to adjust closing delay to adjust it with the animation of the Circular reveal
 ) {
     val context = LocalContext.current
 
@@ -56,11 +58,13 @@ fun CircularRevealAnimation(
     //Button animation progress
     val animationProgress by animateFloatAsState(
         targetValue = if (animateButton) 1f else 0f,
-        animationSpec = tween(1000) // keeping animation specific duration to 1 sec
+        animationSpec = tween(fabAnimationDur),    // keeping animation specific duration to 1 sec
+        label = "Animation progress"
     )
     val progressState = animateFloatAsState(
         targetValue = if (circularRevealAnimation) 1f else 0f,
-        animationSpec = tween(1000) // keeping animation specific duration to 1 sec
+        animationSpec = tween(revealAnimDur),    // keeping animation specific duration to 1 sec
+        label = "Progress state"
     )
 
     // To include raw/JSON5-script file
@@ -76,16 +80,16 @@ fun CircularRevealAnimation(
             modifier = Modifier
                 .fillMaxSize()
                 .background(MattePurple.copy(alpha = 0.8f))
-                .miCircularReveal(
-                    transitionProgress = progressState, revealFrom = Offset(0.5f, 0.5f)
-                )
+//                .miCircularReveal(transitionProgress = progressState, revealFrom = Offset(0.5f, 0.5f))
+                .slideInFromBottomAnimation(transitionProgress = progressState)
         )
     }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .miCircularReveal(transitionProgress = progressState, revealFrom = Offset(0.5f, 0.5f)),
+//            .miCircularReveal(transitionProgress = progressState, revealFrom = Offset(0.5f, 0.5f))
+            .slideInFromBottomAnimation(transitionProgress = progressState),
         contentAlignment = Alignment.BottomCenter
     ) {
         //FIXME: Here we'll pass composable for Card content
@@ -101,7 +105,7 @@ fun CircularRevealAnimation(
      ***/
     if (!circularRevealAnimation) {
         LaunchedEffect(key1 = Unit) {
-            delay(1000)
+            delay(fabCloseDelay)
             animateButton = false
         }
         LaunchedEffect(key1 = Unit) {
@@ -125,20 +129,6 @@ fun CircularRevealAnimation(
             circularRevealAnimation = false
         }
     }
-
-    /**
-     *  To handle FAB button vidibility based on the selection from the caller side.
-     *
-     *  Here we'll hide button after certain time interval once initial animation is done and before
-     *  circular reveal animation is triggered
-     **//*if (hideFabPostAnimation) {
-        LaunchedEffect(key1 = Unit) {
-            delay(1000)
-            isFABVisible = false
-        }
-    } else {
-        isFABVisible = true
-    }*/
 
     if (isFABVisible) {
         MotionLayout(

@@ -76,12 +76,15 @@ class MainActivity : ComponentActivity() {
                                     circularRevealAnimation.value = false
                                 }
                             },
-                            /*fabComposable =  {
+                            fabComposable =  {
                                 FabAnimationHandler() {
                                     animateButton.value = true
                                 }
                             },
-                            hideFabPostAnimationVal = hideFabPostAnimation*/
+//                            hideFabPostAnimationVal = hideFabPostAnimation,
+                            fabAnimationDur = 800,
+                            revealAnimDur = 800,
+                            fabCloseDelay = 800    //FAB progress transition from 100% to 0%
                         )
                     }
                 }
