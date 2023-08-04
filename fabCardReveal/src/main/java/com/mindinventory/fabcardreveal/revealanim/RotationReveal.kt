@@ -1,4 +1,4 @@
-package com.mindinventory.fabcardreveal.utils
+package com.mindinventory.fabcardreveal.revealanim
 
 import android.util.Log
 import androidx.compose.runtime.Composable
@@ -6,6 +6,7 @@ import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.graphics.drawscope.rotate
+import com.mindinventory.fabcardreveal.utils.Lerp
 
 @Composable
 fun Modifier.rotateAnimation(

@@ -10,3 +10,10 @@ fun Lerp(startValue: Float, endValue: Float, fraction: Float): Float {
         label = ""
     ).value
 }
+
+/**
+ *  Types of reveal animation
+ **/
+enum class AnimationType {
+    CIRCULAR_REVEAL, FADE_REVEAL, ROTATION_REVEAL, SCALE_REVEAL, SLIDE_IN_FROM_BOTTOM
+}

@@ -44,13 +44,14 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mindinventory.fabcardreveal.CircularRevealAnimation
 import com.mindinventory.fabcardreveal.R
-import com.mindinventory.motionlayoutfabanimation.ui.theme.Beige
-import com.mindinventory.motionlayoutfabanimation.ui.theme.GolderYellow
-import com.mindinventory.motionlayoutfabanimation.ui.theme.MattePurple
-import com.mindinventory.motionlayoutfabanimation.ui.theme.MotionLayoutFABAnimationTheme
-import com.mindinventory.motionlayoutfabanimation.ui.theme.StrongRed
+import com.mindinventory.fabcardreveal.presentation.CircularRevealAnimation
+import com.mindinventory.fabcardreveal.ui.theme.Beige
+import com.mindinventory.fabcardreveal.ui.theme.GolderYellow
+import com.mindinventory.fabcardreveal.ui.theme.MattePurple
+import com.mindinventory.fabcardreveal.ui.theme.MotionLayoutFABAnimationTheme
+import com.mindinventory.fabcardreveal.ui.theme.StrongRed
+import com.mindinventory.fabcardreveal.utils.AnimationType
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,8 +62,10 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = Beige
                 ) {
-                    val circularRevealAnimation = remember { mutableStateOf(false) }   //To handle circular reveal animation
-                    val animateButton = remember { mutableStateOf(false) } //To manage the state of a FAB button
+                    val circularRevealAnimation =
+                        remember { mutableStateOf(false) }   //To handle circular reveal animation
+                    val animateButton =
+                        remember { mutableStateOf(false) } //To manage the state of a FAB button
                     val hideFabPostAnimation = remember { mutableStateOf(value = true) }
                     Box(
                         modifier = Modifier.fillMaxSize(),
@@ -72,19 +75,22 @@ class MainActivity : ComponentActivity() {
                             circularRevealAnimationVal = circularRevealAnimation,
                             animateButtonVal = animateButton,
                             cardComposable = {
-                                CardComposableHandler() {
-                                    circularRevealAnimation.value = false
+                                CardComposableHandler {
+                                    circularRevealAnimation.value =
+                                        false
                                 }
                             },
-                            fabComposable =  {
-                                FabAnimationHandler() {
+                            fabComposable = {
+                                FabAnimationHandler {
                                     animateButton.value = true
                                 }
                             },
 //                            hideFabPostAnimationVal = hideFabPostAnimation,
                             fabAnimationDur = 800,
                             revealAnimDur = 800,
-                            fabCloseDelay = 800    //FAB progress transition from 100% to 0%
+                            fabCloseDelay = 800,    //FAB progress transition from 100% to 0%
+                            animationType = AnimationType.CIRCULAR_REVEAL,
+//                            overlayBackgroundColor = MattePurple.copy(alpha = 0.8f)
                         )
                     }
                 }

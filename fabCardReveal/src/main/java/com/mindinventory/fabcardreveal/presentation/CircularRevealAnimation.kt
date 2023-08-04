@@ -1,4 +1,4 @@
-package com.mindinventory.fabcardreveal
+package com.mindinventory.fabcardreveal.presentation
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -12,12 +12,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
@@ -29,9 +32,15 @@ import androidx.constraintlayout.compose.ExperimentalMotionApi
 import androidx.constraintlayout.compose.MotionLayout
 import androidx.constraintlayout.compose.MotionLayoutDebugFlags
 import androidx.constraintlayout.compose.MotionScene
-import com.mindinventory.fabcardreveal.utils.slideInFromBottomAnimation
-import com.mindinventory.motionlayoutfabanimation.ui.theme.MattePurple
-import com.mindinventory.motionlayoutfabanimation.ui.theme.OffWhite
+import com.mindinventory.fabcardreveal.R
+import com.mindinventory.fabcardreveal.revealanim.fadeInOutAnimation
+import com.mindinventory.fabcardreveal.revealanim.miCircularReveal
+import com.mindinventory.fabcardreveal.revealanim.rotateAnimation
+import com.mindinventory.fabcardreveal.revealanim.scaleAnimation
+import com.mindinventory.fabcardreveal.revealanim.slideInFromBottomAnimation
+import com.mindinventory.fabcardreveal.ui.theme.MattePurple
+import com.mindinventory.fabcardreveal.ui.theme.OffWhite
+import com.mindinventory.fabcardreveal.utils.AnimationType
 import kotlinx.coroutines.delay
 import java.util.EnumSet
 
@@ -45,7 +54,9 @@ fun CircularRevealAnimation(
     hideFabPostAnimationVal: MutableState<Boolean> = remember { mutableStateOf(false) },
     fabAnimationDur: Int = 1000,
     revealAnimDur: Int = 1000,
-    fabCloseDelay: Long = 1000L //Need to adjust closing delay to adjust it with the animation of the Circular reveal
+    fabCloseDelay: Long = 1000L,    //To adjust closing delay in order to make animation of the Circular reveal smooth and
+    animationType: AnimationType = AnimationType.CIRCULAR_REVEAL,
+    overlayBackgroundColor: Color = Color.Black
 ) {
     val context = LocalContext.current
 
@@ -79,20 +90,24 @@ fun CircularRevealAnimation(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MattePurple.copy(alpha = 0.8f))
-//                .miCircularReveal(transitionProgress = progressState, revealFrom = Offset(0.5f, 0.5f))
-                .slideInFromBottomAnimation(transitionProgress = progressState)
+                .background(overlayBackgroundColor)
+                .applyAnimationBasedOnType(
+                    superModifier = Modifier,
+                    animationType = animationType,
+                    transitionProgress = progressState
+                )
         )
     }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-//            .miCircularReveal(transitionProgress = progressState, revealFrom = Offset(0.5f, 0.5f))
-            .slideInFromBottomAnimation(transitionProgress = progressState),
-        contentAlignment = Alignment.BottomCenter
+            .applyAnimationBasedOnType(
+                superModifier = Modifier,
+                animationType = animationType,
+                transitionProgress = progressState
+            ), contentAlignment = Alignment.BottomCenter
     ) {
-        //FIXME: Here we'll pass composable for Card content
         cardComposable?.let {
             if (animateButton) {
                 it()
@@ -177,4 +192,70 @@ fun CircularRevealAnimation(
             }
         }
     }
+}
+
+@Composable
+fun Modifier.applyAnimationBasedOnType(
+    animationType: AnimationType,
+    superModifier: Modifier,
+    transitionProgress: State<Float>,
+    visible: Boolean = false,   //If true -> transition method, false -> non-transition method,
+    initialRotationDegrees: Float = 0f,
+    finalRotationDegrees: Float = 360f,
+    initialScale: Float = 0f,
+    finalScale: Float = 1f
+): Modifier {
+    return when (animationType) {
+        AnimationType.CIRCULAR_REVEAL -> {
+            if (visible) {
+                this.then(
+                    miCircularReveal(
+                        visible = visible, revealFrom = Offset(0.5f, 0.5f)
+                    )
+                )
+            } else {
+                this.then(
+                    miCircularReveal(
+                        transitionProgress = transitionProgress, revealFrom = Offset(0.5f, 0.5f)
+                    )
+                )
+            }
+        }
+
+        AnimationType.FADE_REVEAL -> {
+            this.then(
+                fadeInOutAnimation(
+                    transitionProgress = transitionProgress
+                )
+            )
+        }
+
+        AnimationType.ROTATION_REVEAL -> {
+            this.then(
+                rotateAnimation(
+                    transitionProgress = transitionProgress,
+                    initialRotationDegrees = initialRotationDegrees,
+                    finalRotationDegrees = finalRotationDegrees
+                )
+            )
+        }
+
+        AnimationType.SCALE_REVEAL -> {
+            this.then(
+                scaleAnimation(
+                    transitionProgress = transitionProgress,
+                    initialScale = initialScale,
+                    finalScale = finalScale
+                )
+            )
+        }
+
+        AnimationType.SLIDE_IN_FROM_BOTTOM -> {
+            this.then(
+                slideInFromBottomAnimation(
+                    transitionProgress = transitionProgress
+                )
+            )
+        }
+    }.then(superModifier)
 }

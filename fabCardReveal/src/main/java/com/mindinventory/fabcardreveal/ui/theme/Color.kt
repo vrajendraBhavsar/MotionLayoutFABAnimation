@@ -1,4 +1,4 @@
-package com.mindinventory.motionlayoutfabanimation.ui.theme
+package com.mindinventory.fabcardreveal.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

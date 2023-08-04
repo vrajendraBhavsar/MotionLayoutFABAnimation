@@ -1,4 +1,4 @@
-package com.mindinventory.fabcardreveal.utils
+package com.mindinventory.fabcardreveal.revealanim
 
 import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
