@@ -162,7 +162,7 @@ fun CircularRevealAnimation(
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = MattePurple),
                     modifier = Modifier
-                        .layoutId("img_hanuman_standing")
+                        .layoutId("mi_fab_start")
                         .padding(10.dp),
                 ) {
                     Text(
@@ -179,7 +179,7 @@ fun CircularRevealAnimation(
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = MattePurple),
                     modifier = Modifier
-                        .layoutId("img_hanuman_pose")
+                        .layoutId("mi_fab_end")
                         .padding(25.dp),
                 ) {
                     Text(

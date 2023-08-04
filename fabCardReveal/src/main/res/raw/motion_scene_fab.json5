@@ -3,13 +3,13 @@
     start: {
       // on below line we are specifying width,height and margin
       // from start, top and end for img_hanuman_standing
-      img_hanuman_standing: {
+      "mi_fab_start": {
         width: 88,
         height: 88,
         end: ['parent', 'end', 16],
         bottom: ['parent', 'bottom', 16]
       },
-      img_hanuman_pose: {
+      "mi_fab_end": {
         width: 88,
         height: 88,
         end: ['parent', 'end', 16],
@@ -19,7 +19,7 @@
     end: {
       // on below line we are specifying width,height and margin
       // from start, top and end for img_hanuman_standing
-      img_hanuman_standing: {
+      "mi_fab_start": {
         width: 128,
         height: 128,
         start: ['parent', 'start'],
@@ -27,7 +27,7 @@
         top: ['parent', 'top'],
         bottom: ['parent', 'bottom']
       },
-      img_hanuman_pose: {
+      "mi_fab_end": {
         width: 128,
         height: 128,
         start: ['parent', 'start'],
@@ -45,12 +45,12 @@
       KeyFrames: {
         KeyAttributes: [ //We define different Attr and how we want this to Animate, during transition for specific composable
           {
-            target: ['img_hanuman_standing'],
+            target: ['mi_fab_start'],
             frames: [0, 20, 100], //For frames we pass a List containing number between 0 - 100
             alpha: [1, 0.5, 0],
           },
           {
-            target: ['img_hanuman_pose'],
+            target: ['mi_fab_end'],
             frames: [0, 50, 100], //For frames we pass a List containing number between 0 - 100
             alpha: [0, 0.5, 1]
           }

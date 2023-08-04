@@ -159,7 +159,6 @@ fun CardComposableHandler(handleRevealAnim: () -> Unit) {
 
                 ClickableText(text = gameLink, style = TextStyle(
                     color = Beige, fontSize = 14.sp, fontWeight = FontWeight.Light,
-//                            fontFamily = FontFamily(Font(R.font.yourFontFamily)),
                     textAlign = TextAlign.Start
                 ), modifier = Modifier.fillMaxWidth(), onClick = {
                     uriHandler.openUri(uri) //Opening a link into the supportive browser using URI Handler
@@ -221,7 +220,7 @@ fun FabAnimationHandler(handleAnimateButton: () -> Unit) {
     //Animating Bal hanuman standing pose image
     Image(
         modifier = Modifier
-            .layoutId("img_hanuman_standing")
+            .layoutId("mi_fab_start")
             .clickable {
 //                animateButton = true
                 handleAnimateButton()
@@ -232,7 +231,7 @@ fun FabAnimationHandler(handleAnimateButton: () -> Unit) {
     //Animating Bal hanuman victory pose image
     Image(
         modifier = Modifier
-            .layoutId("img_hanuman_pose")
+            .layoutId("mi_fab_end")
             .clickable {
 //                animateButton = true
                 handleAnimateButton()
@@ -240,12 +239,4 @@ fun FabAnimationHandler(handleAnimateButton: () -> Unit) {
         painter = painterResource(id = com.mindinventory.motionlayoutfabanimation.R.drawable.ic_hanuman_thumps_up),
         contentDescription = "Hanuman victory pose"
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun FABAnimationPreview() {
-    MotionLayoutFABAnimationTheme {
-//        com.mindinventory.fabcardreveal.CircularRevealAnimation()
-    }
 }
