@@ -47,8 +47,8 @@ import java.util.EnumSet
 @OptIn(ExperimentalMotionApi::class, ExperimentalUnitApi::class)
 @Composable
 fun CircularRevealAnimation(
-    cardComposable: @Composable (() -> Unit)? = null,
-    fabComposable: @Composable (() -> Unit)? = null,
+    cardComposable: @Composable() (() -> Unit)? = null,
+    fabComposable: @Composable() (() -> Unit)? = null,
     circularRevealAnimationVal: MutableState<Boolean> = remember { mutableStateOf(false) },
     animateButtonVal: MutableState<Boolean> = remember { mutableStateOf(false) },
     hideFabPostAnimationVal: MutableState<Boolean> = remember { mutableStateOf(false) },

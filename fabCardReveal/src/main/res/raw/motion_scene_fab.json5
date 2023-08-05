@@ -14,6 +14,12 @@
         height: 88,
         end: ['parent', 'end', 16],
         bottom: ['parent', 'bottom', 16]
+      },
+      "mi_single_fab": {
+        width: 88,
+        height: 88,
+        end: ['parent', 'end', 16],
+        bottom: ['parent', 'bottom', 16]
       }
     },
     end: {
@@ -28,6 +34,14 @@
         bottom: ['parent', 'bottom']
       },
       "mi_fab_end": {
+        width: 128,
+        height: 128,
+        start: ['parent', 'start'],
+        end: ['parent', 'end'],
+        top: ['parent', 'top'],
+        bottom: ['parent', 'bottom']
+      },
+      "mi_single_fab": {
         width: 128,
         height: 128,
         start: ['parent', 'start'],
@@ -54,7 +68,7 @@
             frames: [0, 50, 100], //For frames we pass a List containing number between 0 - 100
             alpha: [0, 0.5, 1]
           }
-        ],
+        ]
       }
     }
   }

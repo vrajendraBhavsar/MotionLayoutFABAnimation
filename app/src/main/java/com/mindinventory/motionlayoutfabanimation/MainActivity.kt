@@ -41,7 +41,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mindinventory.fabcardreveal.R
@@ -62,27 +61,26 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = Beige
                 ) {
-                    val circularRevealAnimation =
-                        remember { mutableStateOf(false) }   //To handle circular reveal animation
+                    val revealAnimation =
+                        remember { mutableStateOf(false) }  //To handle circular reveal animation
                     val animateButton =
-                        remember { mutableStateOf(false) } //To manage the state of a FAB button
+                        remember { mutableStateOf(false) }  //To manage the state of a FAB button
                     val hideFabPostAnimation = remember { mutableStateOf(value = true) }
                     Box(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center,
                     ) {
                         CircularRevealAnimation(
-                            circularRevealAnimationVal = circularRevealAnimation,
+                            circularRevealAnimationVal = revealAnimation,
                             animateButtonVal = animateButton,
                             cardComposable = {
                                 CardComposableHandler {
-                                    circularRevealAnimation.value =
-                                        false
+                                    revealAnimation.value = false   //To trigger card closing animation
                                 }
                             },
                             fabComposable = {
                                 FabAnimationHandler {
-                                    animateButton.value = true
+                                    animateButton.value = true  //In order to start FAB animation on click event
                                 }
                             },
 //                            hideFabPostAnimationVal = hideFabPostAnimation,
@@ -90,7 +88,8 @@ class MainActivity : ComponentActivity() {
                             revealAnimDur = 800,
                             fabCloseDelay = 800,    //FAB progress transition from 100% to 0%
                             animationType = AnimationType.CIRCULAR_REVEAL,
-//                            overlayBackgroundColor = MattePurple.copy(alpha = 0.8f)
+                            overlayBackgroundColor = MattePurple.copy(alpha = 0.8f),
+                            isFabTransition = true
                         )
                     }
                 }
@@ -158,7 +157,9 @@ fun CardComposableHandler(handleRevealAnim: () -> Unit) {
                 Spacer(modifier = Modifier.height(8.dp))
 
                 ClickableText(text = gameLink, style = TextStyle(
-                    color = Beige, fontSize = 14.sp, fontWeight = FontWeight.Light,
+                    color = Beige,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Light,
                     textAlign = TextAlign.Start
                 ), modifier = Modifier.fillMaxWidth(), onClick = {
                     uriHandler.openUri(uri) //Opening a link into the supportive browser using URI Handler
@@ -217,23 +218,33 @@ fun CardComposableHandler(handleRevealAnim: () -> Unit) {
 
 @Composable
 fun FabAnimationHandler(handleAnimateButton: () -> Unit) {
-    //Animating Bal hanuman standing pose image
+    //  FAB without transition
+    /*Image(
+        modifier = Modifier
+            .layoutId("mi_single_fab")
+            .clickable {
+                handleAnimateButton()
+            },
+        painter = painterResource(id = com.mindinventory.motionlayoutfabanimation.R.drawable.ic_hanuman_standing_pose),
+        contentDescription = "Hanuman standing"
+    )*/
+
+    //  FAB with transition
+    //  Handling initial transition
     Image(
         modifier = Modifier
             .layoutId("mi_fab_start")
             .clickable {
-//                animateButton = true
                 handleAnimateButton()
             },
         painter = painterResource(id = com.mindinventory.motionlayoutfabanimation.R.drawable.ic_hanuman_standing_pose),
         contentDescription = "Hanuman standing"
     )
-    //Animating Bal hanuman victory pose image
+    //  Handling closure transition
     Image(
         modifier = Modifier
             .layoutId("mi_fab_end")
             .clickable {
-//                animateButton = true
                 handleAnimateButton()
             },
         painter = painterResource(id = com.mindinventory.motionlayoutfabanimation.R.drawable.ic_hanuman_thumps_up),
