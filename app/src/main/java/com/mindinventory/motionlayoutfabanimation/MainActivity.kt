@@ -21,15 +21,20 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
@@ -43,6 +48,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mindinventory.fabcardreveal.R
 import com.mindinventory.fabcardreveal.presentation.CircularRevealAnimation
 import com.mindinventory.fabcardreveal.ui.theme.Beige
@@ -51,6 +57,8 @@ import com.mindinventory.fabcardreveal.ui.theme.MattePurple
 import com.mindinventory.fabcardreveal.ui.theme.MotionLayoutFABAnimationTheme
 import com.mindinventory.fabcardreveal.ui.theme.StrongRed
 import com.mindinventory.fabcardreveal.utils.AnimationType
+import com.mindinventory.motionlayoutfabanimation.ui.theme.DarkBlue
+import com.mindinventory.motionlayoutfabanimation.ui.theme.GridBackground
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,39 +69,58 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = Beige
                 ) {
-                    val revealAnimation =
-                        remember { mutableStateOf(false) }  //To handle circular reveal animation
-                    val animateButton =
-                        remember { mutableStateOf(false) }  //To manage the state of a FAB button
-                    val hideFabPostAnimation = remember { mutableStateOf(value = true) }
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        CircularRevealAnimation(
-                            circularRevealAnimationVal = revealAnimation,
-                            animateButtonVal = animateButton,
-                            cardComposable = {
-                                CardComposableHandler {
-                                    revealAnimation.value = false   //To trigger card closing animation
-                                }
-                            },
-                            fabComposable = {
-                                FabAnimationHandler {
-                                    animateButton.value = true  //In order to start FAB animation on click event
-                                }
-                            },
-//                            hideFabPostAnimationVal = hideFabPostAnimation,
-                            fabAnimationDur = 800,
-                            revealAnimDur = 800,
-                            fabCloseDelay = 800,    //FAB progress transition from 100% to 0%
-                            animationType = AnimationType.CIRCULAR_REVEAL,
-                            overlayBackgroundColor = MattePurple.copy(alpha = 0.8f)
+                    val systemUiController = rememberSystemUiController()
+                    val useDarkIcons = MaterialTheme.colorScheme.isLight()
+
+                    // To set the status bar color
+                    SideEffect {
+                        systemUiController.setSystemBarsColor(
+                            color = Color.Black,
+                            darkIcons = useDarkIcons
                         )
                     }
+                    MainScreenContent()
+                    FabCardRevealHandler()
                 }
             }
         }
+    }
+}
+
+@Composable
+fun ColorScheme.isLight() = this.background.luminance() > 0.5
+
+@Composable
+fun FabCardRevealHandler() {
+    val revealAnimation =
+        remember { mutableStateOf(false) }  //To handle circular reveal animation
+    val animateButton =
+        remember { mutableStateOf(false) }  //To manage the state of a FAB button
+    val hideFabPostAnimation = remember { mutableStateOf(value = true) }
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center,
+    ) {
+        CircularRevealAnimation(
+            circularRevealAnimationVal = revealAnimation,
+            animateButtonVal = animateButton,
+            cardComposable = {
+                CardComposableHandler {
+                    revealAnimation.value = false   //To trigger card closing animation
+                }
+            },
+            fabComposable = {
+                FabAnimationHandler {
+                    animateButton.value = true  //In order to start FAB animation on click event
+                }
+            },
+//                            hideFabPostAnimationVal = hideFabPostAnimation,
+            fabAnimationDur = 800,
+            revealAnimDur = 800,
+            fabCloseDelay = 800,    //FAB progress transition from 100% to 0%
+            animationType = AnimationType.CIRCULAR_REVEAL,
+            overlayBackgroundColor = MattePurple.copy(alpha = 0.8f)
+        )
     }
 }
 
@@ -108,7 +135,7 @@ fun CardComposableHandler(handleRevealAnim: () -> Unit) {
             .background(
                 brush = Brush.verticalGradient( // Defined vertical gradient colors here
                     listOf(
-                        MattePurple, StrongRed
+                        DarkBlue, GridBackground
                     )
                 )
             )

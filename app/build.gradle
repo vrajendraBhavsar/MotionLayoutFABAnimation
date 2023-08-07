@@ -67,4 +67,7 @@ dependencies {
 
     /* Implemented circular slider Library Module */
     implementation project(path: ':fabCardReveal')
+    /* System icon controller */
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.30.1"
+
 }
