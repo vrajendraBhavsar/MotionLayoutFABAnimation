@@ -10,12 +10,14 @@ import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -30,10 +32,9 @@ import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ExperimentalMotionApi
 import androidx.constraintlayout.compose.MotionLayout
 import androidx.constraintlayout.compose.MotionScene
-import com.mindinventory.motionlayoutfabanimation.R
+import com.mindinventory.motionlayoutfabanimation.R.*
 import com.mindinventory.motionlayoutfabanimation.data.mockdata.ListPreviewParameterProvider
 import com.mindinventory.motionlayoutfabanimation.data.model.MiItem
-import com.mindinventory.motionlayoutfabanimation.R.*
 import com.mindinventory.motionlayoutfabanimation.ui.theme.GridBackground
 import com.mindinventory.motionlayoutfabanimation.ui.theme.MotionLayoutFABAnimationTheme
 
@@ -84,7 +85,7 @@ fun MarioMotionHandler(
          * bg-image
          **/
         Image(
-            painter = painterResource(id = R.drawable.ic_bal_hanuman_level_banner),
+            painter = painterResource(id = drawable.ic_bal_hanuman_level_banner),
             contentDescription = "Toolbar Image",
             contentScale = ContentScale.FillBounds,
             modifier = Modifier
@@ -113,11 +114,11 @@ fun MarioMotionHandler(
                 .zIndex(1f)
         ) {
             Text(
-                text = stringResource(id = R.string.collapsing_text_bal_hanuman_title),
+                text = stringResource(id = string.collapsing_text_bal_hanuman_title),
 //                color = OffWhite,
                 color = propertiesMotionText.value.color("copyColor"),
                 fontFamily = FontFamily(
-                    Font(R.font.kid_games, FontWeight.Light)
+                    Font(font.kid_games, FontWeight.Light)
                 ),
                 fontSize = 20.sp
             )
@@ -125,11 +126,11 @@ fun MarioMotionHandler(
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                text = stringResource(id = R.string.collapsing_text_bal_hanuman_by),
+                text = stringResource(id = string.collapsing_text_bal_hanuman_by),
 //                color = OffWhite,
                 color = propertiesMotionText.value.color("copyColor"),
                 fontFamily = FontFamily(
-                    Font(R.font.kid_games, FontWeight.Light)
+                    Font(font.kid_games, FontWeight.Light)
                 ),
                 fontSize = 12.sp
             )
@@ -139,7 +140,7 @@ fun MarioMotionHandler(
          * Main image
          **/
         Image(
-            painter = painterResource(id = R.drawable.ic_hanuman_thumps_up),
+            painter = painterResource(id = drawable.ic_hanuman_thumps_up),
             contentScale = ContentScale.Fit,
             modifier = Modifier
                 .layoutId("content_img")
@@ -208,7 +209,7 @@ fun MarioMotionHandler(
          * piranha flower
          **/
         Image(
-            painter = painterResource(id = R.drawable.ic_tree_monstar),
+            painter = painterResource(id = drawable.ic_tree_monstar),
             contentScale = ContentScale.Fit,
             modifier = Modifier
                 .layoutId("piranha_flower"),
@@ -219,7 +220,7 @@ fun MarioMotionHandler(
          * piranha tunnel
          **/
         Image(
-            painter = painterResource(id = R.drawable.ic_tree_trunk),
+            painter = painterResource(id = drawable.ic_tree_trunk),
             contentScale = ContentScale.Fit,
             modifier = Modifier
                 .layoutId("piranha_tunnel"),

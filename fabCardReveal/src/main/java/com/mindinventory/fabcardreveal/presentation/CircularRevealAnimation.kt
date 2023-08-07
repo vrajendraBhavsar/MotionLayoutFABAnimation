@@ -41,6 +41,7 @@ import com.mindinventory.fabcardreveal.revealanim.slideInFromBottomAnimation
 import com.mindinventory.fabcardreveal.ui.theme.MattePurple
 import com.mindinventory.fabcardreveal.ui.theme.OffWhite
 import com.mindinventory.fabcardreveal.utils.AnimationType
+import com.mindinventory.fabcardreveal.utils.noRippleClickable
 import kotlinx.coroutines.delay
 import java.util.EnumSet
 
@@ -56,7 +57,8 @@ fun CircularRevealAnimation(
     revealAnimDur: Int = 1000,
     fabCloseDelay: Long = 1000L,    //To adjust closing delay in order to make animation of the Circular reveal smooth and
     animationType: AnimationType = AnimationType.CIRCULAR_REVEAL,
-    overlayBackgroundColor: Color = Color.Black
+    overlayBackgroundColor: Color = Color.Black,
+    isCancellable: Boolean = false
 ) {
     val context = LocalContext.current
 
@@ -96,6 +98,11 @@ fun CircularRevealAnimation(
                     animationType = animationType,
                     transitionProgress = progressState
                 )
+                .noRippleClickable {
+                    if (isCancellable) {
+                        circularRevealAnimation = false
+                    }
+                }
         )
     }
 

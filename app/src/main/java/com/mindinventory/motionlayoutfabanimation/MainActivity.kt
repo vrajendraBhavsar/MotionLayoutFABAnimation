@@ -35,6 +35,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
@@ -55,8 +56,9 @@ import com.mindinventory.fabcardreveal.ui.theme.Beige
 import com.mindinventory.fabcardreveal.ui.theme.GolderYellow
 import com.mindinventory.fabcardreveal.ui.theme.MattePurple
 import com.mindinventory.fabcardreveal.ui.theme.MotionLayoutFABAnimationTheme
-import com.mindinventory.fabcardreveal.ui.theme.StrongRed
 import com.mindinventory.fabcardreveal.utils.AnimationType
+import com.mindinventory.motionlayoutfabanimation.ui.theme.Blue
+import com.mindinventory.motionlayoutfabanimation.ui.theme.CoinCount
 import com.mindinventory.motionlayoutfabanimation.ui.theme.DarkBlue
 import com.mindinventory.motionlayoutfabanimation.ui.theme.GridBackground
 
@@ -119,7 +121,8 @@ fun FabCardRevealHandler() {
             revealAnimDur = 800,
             fabCloseDelay = 800,    //FAB progress transition from 100% to 0%
             animationType = AnimationType.CIRCULAR_REVEAL,
-            overlayBackgroundColor = MattePurple.copy(alpha = 0.8f)
+            overlayBackgroundColor = DarkBlue.copy(alpha = 0.6f),
+            isCancellable = true
         )
     }
 }
@@ -135,10 +138,11 @@ fun CardComposableHandler(handleRevealAnim: () -> Unit) {
             .background(
                 brush = Brush.verticalGradient( // Defined vertical gradient colors here
                     listOf(
-                        DarkBlue, GridBackground
+                        Blue, GridBackground
                     )
                 )
             )
+            .pointerInput(Unit) {}
     ) {
         Column(
             modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween
@@ -194,6 +198,7 @@ fun CardComposableHandler(handleRevealAnim: () -> Unit) {
                 Text(
                     text = stringResource(id = R.string.circular_reveal_body_copy_text),
                     fontSize = 14.sp,
+                    style = TextStyle(lineHeight = 16.sp),
                     fontWeight = FontWeight.Normal,
                     color = Beige
                 )
@@ -228,12 +233,12 @@ fun CardComposableHandler(handleRevealAnim: () -> Unit) {
                         .fillMaxWidth()
                         .aspectRatio(3f) // Adjust the aspect ratio to your preference
                         .weight(1f),
-                    colors = ButtonDefaults.buttonColors(containerColor = GolderYellow),
+                    colors = ButtonDefaults.buttonColors(containerColor = Blue),
                 ) {
                     Text(
                         text = stringResource(id = R.string.circular_reveal_btn_playstore_link),
                         fontSize = 16.sp,
-                        color = MattePurple,
+                        color = CoinCount,
                         fontWeight = FontWeight.SemiBold,
                     )
                 }
