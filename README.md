@@ -1,7 +1,7 @@
 # MotionLayoutFABAnimation
-- A versatile FAB button and card animation which inherently involves stateful transformations of your compose views, and maintaining visual aesthetics necessitate the following attributes:
+- A versatile FAB button and card animation which inherently involves stateful transformations of your compose views, and maintaining visual aesthetics. Animation plays a crucial role of providing:
     - Seamlessness
-    - Smooth
+    - Smooth experience
     - Reentrant
 
 ### Types of Reveal animations
@@ -45,9 +45,9 @@ In order to achieve a cross-fade animation effect with FAB, which would enable o
 | ```fabAnimationDur```            | To manage the animation duration of FAB                                                           |
 | ```revealAnimDur```              | To manage the animation duration of reveal animation                                              |
 | ```fabCloseDelay```              | To adjust closing animation duration in order to make reveal animation smooth                     |
-| ```animationType```              | Enum to set the type of animation which is mentioned in the "Types of Reveal animations" section |
+| ```animationType```              | Enum to set the type of animation which is mentioned in the "Types of Reveal animations" section  |
 | ```overlayBackgroundColor```     | To pass color which would set as an overlay background                                            |
-
+| ```isCancellable```              | To handle dialog closure upon external touch interaction                                          |
 
 ### How to use it? :thinking:
 1. Add this to your root build.gradle at the end of repositories:
@@ -98,6 +98,7 @@ revealAnimDur = 800,
 fabCloseDelay = 800,  
 animationType = AnimationType.CIRCULAR_REVEAL,
 overlayBackgroundColor = MattePurple.copy(alpha = 0.8f)
+isCancellable = true
 )
 ```
 
