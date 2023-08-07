@@ -88,8 +88,7 @@ class MainActivity : ComponentActivity() {
                             revealAnimDur = 800,
                             fabCloseDelay = 800,    //FAB progress transition from 100% to 0%
                             animationType = AnimationType.CIRCULAR_REVEAL,
-                            overlayBackgroundColor = MattePurple.copy(alpha = 0.8f),
-                            isFabTransition = true
+                            overlayBackgroundColor = MattePurple.copy(alpha = 0.8f)
                         )
                     }
                 }
