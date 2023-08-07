@@ -58,7 +58,8 @@ fun CircularRevealAnimation(
     fabCloseDelay: Long = 1000L,    //To adjust closing delay in order to make animation of the Circular reveal smooth and
     animationType: AnimationType = AnimationType.CIRCULAR_REVEAL,
     overlayBackgroundColor: Color = Color.Black,
-    isCancellable: Boolean = false
+    isCancellable: Boolean = false,
+    debugMode: EnumSet<MotionLayoutDebugFlags> = EnumSet.of(MotionLayoutDebugFlags.NONE)
 ) {
     val context = LocalContext.current
 
@@ -156,7 +157,7 @@ fun CircularRevealAnimation(
         MotionLayout(
             motionScene = MotionScene(motionScene),
             progress = animationProgress,
-            debug = EnumSet.of(MotionLayoutDebugFlags.SHOW_ALL),    // To enable debug mode
+            debug = debugMode,    // To enable debug mode
             modifier = Modifier.fillMaxSize()
         ) {
             if (fabComposable != null) {

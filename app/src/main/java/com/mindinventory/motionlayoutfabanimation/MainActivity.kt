@@ -49,6 +49,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.MotionLayoutDebugFlags
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.mindinventory.fabcardreveal.R
 import com.mindinventory.fabcardreveal.presentation.CircularRevealAnimation
@@ -61,6 +62,7 @@ import com.mindinventory.motionlayoutfabanimation.ui.theme.Blue
 import com.mindinventory.motionlayoutfabanimation.ui.theme.CoinCount
 import com.mindinventory.motionlayoutfabanimation.ui.theme.DarkBlue
 import com.mindinventory.motionlayoutfabanimation.ui.theme.GridBackground
+import java.util.EnumSet
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -116,13 +118,14 @@ fun FabCardRevealHandler() {
                     animateButton.value = true  //In order to start FAB animation on click event
                 }
             },
-//                            hideFabPostAnimationVal = hideFabPostAnimation,
+//            hideFabPostAnimationVal = hideFabPostAnimation,
             fabAnimationDur = 800,
             revealAnimDur = 800,
             fabCloseDelay = 800,    //FAB progress transition from 100% to 0%
             animationType = AnimationType.CIRCULAR_REVEAL,
             overlayBackgroundColor = DarkBlue.copy(alpha = 0.6f),
-            isCancellable = true
+            isCancellable = true,
+            debugMode = EnumSet.of(MotionLayoutDebugFlags.SHOW_ALL)
         )
     }
 }
