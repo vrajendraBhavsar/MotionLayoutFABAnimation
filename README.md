@@ -3,18 +3,16 @@
 - A versatile FAB button and card animation which inherently involves stateful transformations of
   your compose views, and maintaining visual aesthetics. Animation plays a crucial role of
   providing:
+
     - Seamlessness
     - Smooth experience
     - Reentrant
 
 ### Types of Reveal animations
 
-| Animation Type       | Preview                               |
-|----------------------|---------------------------------------|
-| CIRCULAR_REVEAL      | ![image](/media/content_circular.gif) |
-| ROTATION_REVEAL      | ![image](/media/content_rotation.gif) |
-| SCALE_REVEAL         | ![image](/media/content_scale.gif)    |
-| SLIDE_IN_FROM_BOTTOM | ![image](/media/content_slide_in.gif) |
+| CIRCULAR_REVEAL                                              | ROTATION_REVEAL                                              | SCALE_REVEAL                                              | SLIDE_IN_FROM_BOTTOM                                         |
+|--------------------------------------------------------------|--------------------------------------------------------------|-----------------------------------------------------------|--------------------------------------------------------------|
+| <img src="/media/content_circular.gif" width=80% height=80%> | <img src="/media/content_rotation.gif" width=81% height=81%> | <img src="/media/content_scale.gif" width=90% height=90%> | <img src="/media/content_slide_in.gif" width=68% height=68%> |
 
 ### Key features
 
@@ -26,19 +24,11 @@
 
 ### Layout ids to hook your FAB with predefined motion script
 
-#Option:1 - Without FAB transition effect
-You need to make use of ```layoutId``` modifier in order to hook your composable with the motion
-scene and the rest will be taken care of!
-| mi_single_fab |
-|-----------------------------------------|
-| <img src="/media/content_single_fab.png" width=50% height=50%> |
-
-#Option:2 - With FAB transition effect
-In order to achieve a cross-fade animation effect with FAB, which would enable one image to get
-transitioned into another during the FAB progression
-| mi_fab_start | mi_fab_end |
-|-----------------------------------------|-----------------------------------------|
-| <img src="/media/content_fab_start.png" width=50% height=50%>  | <img src="/media/content_fab_end.png" width=50% height=50%>    |
+Below, you will find animation references along with their corresponding layout IDs that can be utilized to replicate the same effects.
+| Animation | Without FAB transition effect                                    | With FAB transition effect (Initial state)                      | With FAB transition effect (Later state)                      |
+|-----------|------------------------------------------------------------------|-----------------------------------------------------------------|---------------------------------------------------------------|
+| layoutId  | mi_single_fab                                                    | mi_fab_start                                                    | mi_fab_end                                                    |
+| Reference | <img src="/media/content_single_fab.png" width=100% height=100%> | <img src="/media/content_fab_start.png" width=100% height=100%> | <img src="/media/content_fab_end.png" width=100% height=100%> |
 
 1. Pointer ```1``` demonstrates the implementation of a single fab without
    employing any cross-fade effects. Simply set **mi_single_fab** as a ```layoutId``` and It'll take care of your single fab
@@ -59,11 +49,11 @@ transitioned into another during the FAB progression
 | ```hideFabPostAnimationVal```    | To hide FAB once the animation is done.                                                                                       |
 | ```fabAnimationDur```            | To manage the animation duration of FAB.                                                                                      |
 | ```revealAnimDur```              | To manage the animation duration of reveal animation.                                                                         |
-| ```fabCloseDelay```              | To adjust closing animation duration in order to make reveal animation smooth.                                                |
-| ```animationType```              | Enum to set the type of animation which is mentioned in the "Types of Reveal animations" section.                             |
+| ```fabCloseDelay```              | To adjust the closing animation duration in order to make the reveal animation smooth.                                        |
+| ```animationType```              | Enum to set the animation type mentioned in the "Types of Reveal animations" section.                                         |
 | ```overlayBackgroundColor```     | To pass color which would set as an overlay background                                                                        |
 | ```isCancellable```              | To handle dialog closure upon external touch interaction.                                                                     |
-| ```debugMode```                  | To enable or disable debug mode of Motion Layout. Set ```NONE``` to close debug mode and ```SHOW_ALL``` to enable debug mode. |
+| ```debugMode```                  | To enable or disable debug mode of Motion Layout. Set **NONE** to close debug mode and **SHOW_ALL** to enable debug mode.     |
 
 ### How to use it? :thinking:
 
@@ -86,7 +76,7 @@ dependencies {
 ```
 
 3. How to Implement:
-   At the outset, we require few states to manage our animations smoothly which you can handle from
+   At the outset, we require a few states to manage our animations smoothly which you can handle from
    your custom composable.
 
 To handle circular reveal animation
@@ -101,7 +91,7 @@ To manage the state of a FAB button
 val animateButton = remember { mutableStateOf(false) }
 ```
 
-To hide FAB post completion of it's animation
+To hide FAB post-completion of its animation
 
 ```
 val animateButton = remember { mutableStateOf(false) }
@@ -136,7 +126,7 @@ FabCardReveal is [MIT-licensed](/LICENSE).
 
 # Let us know!
 
-We'd be delighted to receive links to your projects showcasing our component in action! Simply drop
+We'd be delighted to receive links to your projects showcasing our component in action! Drop
 us an email at sales@mindinventory.com. If you have any questions or suggestions concerning our
 work, we'd love to hear from you. Your feedback is important to us!
 
