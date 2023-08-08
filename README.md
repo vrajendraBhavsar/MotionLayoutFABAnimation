@@ -31,14 +31,14 @@ You need to make use of ```layoutId``` modifier in order to hook your composable
 scene and the rest will be taken care of!
 | mi_single_fab |
 |-----------------------------------------|
-| ![image](/media/content_single_fab.png) |
+| <img src="/media/content_single_fab.png" width=50% height=50%> |
 
 #Option:2 - With FAB transition effect
 In order to achieve a cross-fade animation effect with FAB, which would enable one image to get
 transitioned into another during the FAB progression
 | mi_fab_start | mi_fab_end |
 |-----------------------------------------|-----------------------------------------|
-| ![image](/media/content_fab_start.png)  | ![image](/media/content_fab_end.png)    |
+| <img src="/media/content_fab_start.png" width=50% height=50%>  | <img src="/media/content_fab_end.png" width=50% height=50%>    |
 
 1. Pointer ```1``` demonstrates the implementation of a single fab without
    employing any cross-fade effects. Simply set **mi_single_fab** as a ```layoutId``` and It'll take care of your single fab
