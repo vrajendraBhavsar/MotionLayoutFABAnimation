@@ -40,22 +40,30 @@ transitioned into another during the FAB progression
 |-----------------------------------------|-----------------------------------------|
 | ![image](/media/content_fab_start.png)  | ![image](/media/content_fab_end.png)    |
 
+1. Pointer ```1``` demonstrates the implementation of a single fab without
+   employing any cross-fade effects. Simply set **mi_single_fab** as a ```layoutId``` and It'll take care of your single fab
+   animation.
+2. Pointer ```2``` indicates the initial state of a composable that handles the fade-in transition
+   of a FAB, gradually revealing it as it transitions into the second composable.
+3. Pointer ```3``` indicates the later state of a composable which manages the fade-out transition
+   for the previous image, smoothly hiding it while the new composable becomes visible.
+
 ### Attributes
 
-| Attribute                        | Description                                                                                      |
-|----------------------------------|--------------------------------------------------------------------------------------------------|
-| ```circularRevealAnimationVal``` | To handle circular reveal animation                                                              |
-| ```animateButtonVal```           | To manage the state of a FAB button                                                              |
-| ```cardComposable```             | Pass your custom composable, which will be integrated into a card content post-reveal animation  |
-| ```fabComposable```              | Pass your custom composable, which will be shown as a Floating Action Button                     |
-| ```hideFabPostAnimationVal```    | To hide FAB once the animation is done                                                           |
-| ```fabAnimationDur```            | To manage the animation duration of FAB                                                          |
-| ```revealAnimDur```              | To manage the animation duration of reveal animation                                             |
-| ```fabCloseDelay```              | To adjust closing animation duration in order to make reveal animation smooth                    |
-| ```animationType```              | Enum to set the type of animation which is mentioned in the "Types of Reveal animations" section |
-| ```overlayBackgroundColor```     | To pass color which would set as an overlay background                                           |
-| ```isCancellable```              | To handle dialog closure upon external touch interaction                                         |
-| ```debugMode```                  | To enable or disable debug mode of Motion Layout                                                 |
+| Attribute                        | Description                                                                                                                   |
+|----------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| ```circularRevealAnimationVal``` | To handle circular reveal animation.                                                                                          |
+| ```animateButtonVal```           | To manage the state of a FAB button.                                                                                          |
+| ```cardComposable```             | Pass your custom composable, which will be integrated into a card content post-reveal animation.                              |
+| ```fabComposable```              | Pass your custom composable, which will be shown as a Floating Action Button.                                                 |
+| ```hideFabPostAnimationVal```    | To hide FAB once the animation is done.                                                                                       |
+| ```fabAnimationDur```            | To manage the animation duration of FAB.                                                                                      |
+| ```revealAnimDur```              | To manage the animation duration of reveal animation.                                                                         |
+| ```fabCloseDelay```              | To adjust closing animation duration in order to make reveal animation smooth.                                                |
+| ```animationType```              | Enum to set the type of animation which is mentioned in the "Types of Reveal animations" section.                             |
+| ```overlayBackgroundColor```     | To pass color which would set as an overlay background                                                                        |
+| ```isCancellable```              | To handle dialog closure upon external touch interaction.                                                                     |
+| ```debugMode```                  | To enable or disable debug mode of Motion Layout. Set ```NONE``` to close debug mode and ```SHOW_ALL``` to enable debug mode. |
 
 ### How to use it? :thinking:
 
@@ -77,7 +85,7 @@ dependencies {
 }
 ```
 
-3.  How to Implement:
+3. How to Implement:
    At the outset, we require few states to manage our animations smoothly which you can handle from
    your custom composable.
 
