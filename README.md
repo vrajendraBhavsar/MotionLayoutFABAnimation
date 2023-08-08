@@ -12,7 +12,6 @@
 | Animation Type       | Preview                               |
 |----------------------|---------------------------------------|
 | CIRCULAR_REVEAL      | ![image](/media/content_circular.gif) |
-| FADE_REVEAL          | ![image](/media/content_fade.gif)     |
 | ROTATION_REVEAL      | ![image](/media/content_rotation.gif) |
 | SCALE_REVEAL         | ![image](/media/content_scale.gif)    |
 | SLIDE_IN_FROM_BOTTOM | ![image](/media/content_slide_in.gif) |
